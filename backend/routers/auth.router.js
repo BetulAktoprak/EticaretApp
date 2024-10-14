@@ -18,7 +18,7 @@ router.post("/register",async(req,res) => {
 
         const checkUserEmail = await User.findOne({email: user.email});
         if(checkUserEmail != null){
-            res.status(403).json({message: "Bu mail adresi dahya önce kullanılmış"});
+            res.status(403).json({message: "Bu mail adresi daha önce kullanılmış"});
         }else{
             await user.save();
             const token = jwt.sign({}, secretKey, options);
