@@ -10,6 +10,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { ReplaceBackslashesPipe } from './components/products/components/products/replace-backslashes.pipe';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,7 +27,8 @@ export const appConfig: ApplicationConfig = {
         closeButton: true,
         progressBar: true
       }),
-      RouterModule.forRoot(routes)
+      RouterModule.forRoot(routes),
+      ReplaceBackslashesPipe
     )
   ]
 };

@@ -3,6 +3,7 @@ const User = require("../models/user");
 const router = express.Router();
 const {v4:uuidv4} = require("uuid");
 const jwt = require("jsonwebtoken"); 
+const response = require("../services/response.service");
 
 const secretKey = "My Secret Key My Secret Key 1234.";
 const options = {
@@ -10,7 +11,7 @@ const options = {
 }
 
 router.post("/register",async(req,res) => {
-    try {
+    response(res, async() => {
         const user = new User(req.body);
         user._id = uuidv4();
         user.createdDate = new Date();
@@ -25,14 +26,11 @@ router.post("/register",async(req,res) => {
             let model = {token: token, user: user};
             res.json(model);
         }
-
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
+    });
 });
 
 router.post("/login", async(req, res) => {
-    try {
+    response(res, async() => {
         const {email, password} = req.body;
 
         let user = await User.findOne({email: email});
@@ -49,9 +47,7 @@ router.post("/login", async(req, res) => {
                 res.json(model);
             }
         }
-    } catch (error) {
-        res.status(500).json({message: error.message});
-    }
+    });
 });
 
 
