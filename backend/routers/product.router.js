@@ -136,4 +136,48 @@ router.post("/removeImageByProductAndIndex", async(req, res) => {
     });
 });
 
+//Ana sayfa için ürün listesi
+
+router.post("/getAllByHomePage", async(req, res) => {
+  response(res, async() => {
+    const {pageNumber, pageSize, search, categoryId, priceFilter} = req.body;
+
+    let query = {
+      isActive: true,
+      categories: { $regex: categoryId, $options: 'i'},
+      $or: [
+        {
+          name: { $regex: search, $options: 'i'}
+        }
+      ]
+    };
+
+    let products;
+
+    let sortOrder;
+    if (priceFilter === "asc" || priceFilter === "1") {
+      sortOrder = 1; 
+    } else if (priceFilter === "desc" || priceFilter === "-1") {
+      sortOrder = -1; 
+    } else {
+      sortOrder = 1;
+    }
+
+    if(priceFilter == "0"){
+       products = await Product
+        .find(query)
+        .sort({name: 1})
+        .populate("categories");
+    }
+    else{
+       products = await Product
+        .find(query)
+        .sort({price: sortOrder})
+        .populate("categories");
+    }
+
+    res.json(products);
+  });
+});
+
 module.exports = router;

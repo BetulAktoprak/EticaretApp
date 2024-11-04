@@ -42,4 +42,8 @@ export class ProductService {
     this._http.post<MessageResponseModel>("products/removeImageByProductAndIndex", model, res => callBack(res));
   }
 
+  getAllByHomePage(model: RequestModel, callBack: (res: ProductModel[]) => void) {
+    this._http.post<ProductModel[]>("products/getAllByHomePage", model, res => callBack(res));
+}
+
 }
